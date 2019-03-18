@@ -22,10 +22,6 @@ server.post("/users", (req, res) => {
     });
 });
 
-server.get("/now", (req, res) => {
-  res.send(new Date());
-});
-
 server.get("/users", (req, res) => {
   db.find()
     .then(users => {
@@ -33,6 +29,17 @@ server.get("/users", (req, res) => {
     })
     .catch(error => {
       res.status(500).json({ message: "error retrieving users" });
+    });
+});
+
+server.get("/users/:id", (req, res) => {
+  const { id } = req.params;
+  db.findById(id)
+    .then(user => {
+      res.status(203).json(user);
+    })
+    .catch(error => {
+      res.status(500).json({ message: "error retrieving user" });
     });
 });
 
