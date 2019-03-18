@@ -10,6 +10,9 @@ server.get("/", (req, res) => {
   res.send("hello");
 });
 
+// ########################################
+// ########################################
+
 server.post("/users", (req, res) => {
   const userInfo = req.body;
   console.log("user info", userInfo);
@@ -21,6 +24,9 @@ server.post("/users", (req, res) => {
       res.status(500).json({ message: "error updating" });
     });
 });
+
+// ########################################
+// ########################################
 
 server.get("/users", (req, res) => {
   db.find()
@@ -40,6 +46,21 @@ server.get("/users/:id", (req, res) => {
     })
     .catch(error => {
       res.status(500).json({ message: "error retrieving user" });
+    });
+});
+
+// ########################################
+// ########################################
+
+server.delete("/users/:id", (req, res) => {
+  const { id } = req.params;
+
+  db.remove(id)
+    .then(removed => {
+      res.status(204).end();
+    })
+    .catch(error => {
+      res.status(500).json({ message: "error deleting" });
     });
 });
 
