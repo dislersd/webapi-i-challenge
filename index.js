@@ -64,6 +64,26 @@ server.delete("/users/:id", (req, res) => {
     });
 });
 
+// ########################################
+// ########################################
+
+server.put("/users/:id", (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+
+  db.update(id, changes)
+    .then(updated => {
+      if (updated) {
+        res.status(205).json(updated);
+      } else {
+        res.status(404).json({ message: "user not found " });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ message: "error updating " });
+    });
+});
+
 server.listen(3000, () => {
   console.log(`\n** Up and running on port 3K`);
 });
