@@ -6,17 +6,28 @@ const server = express();
 
 server.use(express.json());
 
-server.get('/', (req, res) => {
-  res.send('hello')
+server.get("/", (req, res) => {
+  res.send("hello");
 });
 
-server.get('/now', (req, res) => {
-  res.send( new Date());
+server.post("/users", (req, res) => {
+  const userInfo = req.body;
+  console.log("user info", userInfo);
+  db.insert(userInfo)
+    .then(user => {
+      res.status(201).json(user);
+    })
+    .catch(error => {
+      res.status(500).json({ message: "error updating" });
+    });
+});
+
+server.get("/now", (req, res) => {
+  res.send(new Date());
 });
 
 server.get("/users", (req, res) => {
-  db
-    .find()
+  db.find()
     .then(users => {
       res.status(200).json(users);
     })
